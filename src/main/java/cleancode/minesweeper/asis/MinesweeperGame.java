@@ -15,64 +15,31 @@ public class MinesweeperGame {
         System.out.println("지뢰찾기 게임 시작!");
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         Scanner scanner = new Scanner(System.in);
+
+        // 보드를 빈 셀로 초기화
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 10; j++) {
                 board[i][j] = "□";
             }
         }
+
+        // 지뢰 초기화
         for (int i = 0; i < 10; i++) {
             int col = new Random().nextInt(10);
             int row = new Random().nextInt(8);
             landMines[row][col] = true;
         }
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 10; j++) {
-                int count = 0;
-                if (!landMines[i][j]) {
-                    if (i - 1 >= 0 && j - 1 >= 0 && landMines[i - 1][j - 1]) {
-                        count++;
-                    }
-                    if (i - 1 >= 0 && landMines[i - 1][j]) {
-                        count++;
-                    }
-                    if (i - 1 >= 0 && j + 1 < 10 && landMines[i - 1][j + 1]) {
-                        count++;
-                    }
-                    if (j - 1 >= 0 && landMines[i][j - 1]) {
-                        count++;
-                    }
-                    if (j + 1 < 10 && landMines[i][j + 1]) {
-                        count++;
-                    }
-                    if (i + 1 < 8 && j - 1 >= 0 && landMines[i + 1][j - 1]) {
-                        count++;
-                    }
-                    if (i + 1 < 8 && landMines[i + 1][j]) {
-                        count++;
-                    }
-                    if (i + 1 < 8 && j + 1 < 10 && landMines[i + 1][j + 1]) {
-                        count++;
-                    }
-                    landMineCounts[i][j] = count;
-                    continue;
-                }
-                landMineCounts[i][j] = 0;
-            }
-        }
+
+        주변지뢰숫자초기화();
+
         while (true) {
-            System.out.println("   a b c d e f g h i j");
-            for (int i = 0; i < 8; i++) {
-                System.out.printf("%d  ", i + 1);
-                for (int j = 0; j < 10; j++) {
-                    System.out.print(board[i][j] + " ");
-                }
-                System.out.println();
-            }
-            if (gameStatus == 1) {
+            printBoard();
+
+            if (gameStatus == 1) { // 승리했을 때
                 System.out.println("지뢰를 모두 찾았습니다. GAME CLEAR!");
                 break;
             }
-            if (gameStatus == -1) {
+            if (gameStatus == -1) { // 졌을 때
                 System.out.println("지뢰를 밟았습니다. GAME OVER!");
                 break;
             }
@@ -154,6 +121,54 @@ public class MinesweeperGame {
                 }
             } else {
                 System.out.println("잘못된 번호를 선택하셨습니다.");
+            }
+        }
+    }
+
+    private static void printBoard() {
+        System.out.println("   a b c d e f g h i j");
+        for (int i = 0; i < 8; i++) {
+            System.out.printf("%d  ", i + 1);
+            for (int j = 0; j < 10; j++) {
+                System.out.print(board[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    private static void 주변지뢰숫자초기화() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 10; j++) {
+                int count = 0;
+                if (!landMines[i][j]) {
+                    if (i - 1 >= 0 && j - 1 >= 0 && landMines[i - 1][j - 1]) {
+                        count++;
+                    }
+                    if (i - 1 >= 0 && landMines[i - 1][j]) {
+                        count++;
+                    }
+                    if (i - 1 >= 0 && j + 1 < 10 && landMines[i - 1][j + 1]) {
+                        count++;
+                    }
+                    if (j - 1 >= 0 && landMines[i][j - 1]) {
+                        count++;
+                    }
+                    if (j + 1 < 10 && landMines[i][j + 1]) {
+                        count++;
+                    }
+                    if (i + 1 < 8 && j - 1 >= 0 && landMines[i + 1][j - 1]) {
+                        count++;
+                    }
+                    if (i + 1 < 8 && landMines[i + 1][j]) {
+                        count++;
+                    }
+                    if (i + 1 < 8 && j + 1 < 10 && landMines[i + 1][j + 1]) {
+                        count++;
+                    }
+                    landMineCounts[i][j] = count;
+                    continue;
+                }
+                landMineCounts[i][j] = 0;
             }
         }
     }
